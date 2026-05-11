@@ -1,0 +1,8 @@
+CREATE DATABASE TechSales;
+GO
+USE TechSales;
+GO
+CREATE SCHEMA cadastro; GO
+CREATE SCHEMA comercial; GO
+CREATE SCHEMA estoque;   GO
+CREATE SCHEMA vendas;    GO
