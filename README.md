@@ -4,7 +4,7 @@
 Pipeline completo de dados de uma distribuidora fictícia 
 de tecnologia (TechSales Ltda), cobrindo todas as etapas 
 de um projeto real de dados:
-OLTP → Stage → DataWarehouse → ETL → BI
+OLTP → Stage → DataWarehouse → ELT → BI
 
 ## 🏢 Contexto
 A TechSales Ltda é uma distribuidora de produtos de 
@@ -37,7 +37,7 @@ OLTP → Stage → DataWarehouse → Power BI
 ## ⏳ Em Desenvolvimento
 - Banco Stage
 - DataWarehouse (Star Schema)
-- ETL com SSIS e SQL
+- ELT com SSIS e SQL
 - Dashboard Power BI
 
 ## 📁 Estrutura do Repositório
