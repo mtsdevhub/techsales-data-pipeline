@@ -44,6 +44,6 @@ OLTP → Stage → DataWarehouse → Power BI
 01-oltp/          → Banco operacional
 02-stage/         → Banco de staging
 03-datawarehouse/ → Banco analítico
-04-ssis/          → Pacotes ETL
+04-ssis/          → Pacotes ELT
 05-bi/            → Dashboard Power BI
 docs/             → Diagramas e documentação
