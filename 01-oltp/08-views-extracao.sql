@@ -134,3 +134,34 @@ SELECT
     p.observacoes,
     p.data_atualizacao
 GO
+
+    -- ============================================
+    -- 5. vw_Extracao_Itens_Pedido
+    -- Extrai itens dos pedidos com lucro por item
+    -- ============================================
+
+	CREATE OR ALTER VIEW vw_Extracao_Itens_Pedido 
+	AS
+	SELECT
+    i.id_item_pedido                                        AS CodOrigemItem,
+    i.id_pedido                                             AS CodPedido,
+    i.id_produto                                            AS CodProduto,
+    i.quantidade                                            AS QuantidadeItem,
+    i.preco_unitario                                        AS PrecoUnitarioItem,
+    ISNULL(i.desconto_item, 0)                              AS DescontoItem,
+    i.aprovacao_desconto                                    AS AprovacaoDesconto,
+    pd.data_pedido                                          AS DataPedido,
+    pd.[status]                                             AS StatusPedido,
+    ISNULL(pd.desconto_pedido, 0)                           AS DescontoPedido,
+    i.preco_unitario * i.quantidade                         AS ValorBruto,
+    i.preco_unitario * i.quantidade *
+        (1 - ISNULL(i.desconto_item, 0) / 100.0) *
+        (1 - ISNULL(pd.desconto_pedido, 0) / 100.0)        AS ValorLiquido,
+    (i.preco_unitario *
+        (1 - ISNULL(i.desconto_item, 0) / 100.0) *
+        (1 - ISNULL(pd.desconto_pedido, 0) / 100.0)
+        - p.preco_custo) * i.quantidade                     AS LucroBruto
+	FROM comercial.Item_Pedido AS i
+	INNER JOIN estoque.Produto AS p   ON i.id_produto = p.id_produto
+	INNER JOIN comercial.Pedido AS pd ON i.id_pedido  = pd.id_pedido
+GO    

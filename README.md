@@ -32,7 +32,7 @@ OLTP → Stage → DataWarehouse → Power BI
 - 4 Views analíticas
 - 2 Triggers
 - 1 Stored Procedure
-- 4 Views de extração para o Stage
+- 5 Views de extração para o Stage
 
 ## ⏳ Em Desenvolvimento
 - Banco Stage
