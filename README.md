@@ -4,7 +4,7 @@
 Pipeline completo de dados de uma distribuidora fictícia 
 de tecnologia (TechSales Ltda), cobrindo todas as etapas 
 de um projeto real de dados:
-OLTP → Stage → DataWarehouse → ELT → BI
+OLTP → Stage → DataWarehouse → ETL → BI
 
 ## 🏢 Contexto
 A TechSales Ltda é uma distribuidora de produtos de 
@@ -23,7 +23,7 @@ OLTP → Stage → DataWarehouse → Power BI
 
 ## ✅ Etapas Concluídas
 
-### 01 - OLTP
+### 01 - OLTP ✅
 - Modelagem Conceitual MER e DER (notação Peter Chen)
 - Modelagem Lógica com normalização 1FN, 2FN e 3FN
 - Modelo Físico com 4 schemas e 14 tabelas
@@ -34,16 +34,21 @@ OLTP → Stage → DataWarehouse → Power BI
 - 1 Stored Procedure
 - 5 Views de extração para o Stage
 
+### 02 - Stage ✅
+- Banco Stage_TechSales criado
+- 5 tabelas de staging no schema dbo (Será criado Schema stage futuramente)
+- Procedure de carga com log de auditoria
+- Admin_Log para rastreabilidade das cargas
+
 ## ⏳ Em Desenvolvimento
-- Banco Stage
 - DataWarehouse (Star Schema)
-- ELT com SSIS e SQL
+- ETL com SSIS
 - Dashboard Power BI
 
 ## 📁 Estrutura do Repositório
 01-oltp/          → Banco operacional
 02-stage/         → Banco de staging
 03-datawarehouse/ → Banco analítico
-04-ssis/          → Pacotes ELT
+04-ssis/          → Pacotes ETL
 05-bi/            → Dashboard Power BI
 docs/             → Diagramas e documentação
