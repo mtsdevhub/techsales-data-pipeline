@@ -40,6 +40,14 @@ OLTP → Stage → DataWarehouse → Power BI
 - Procedure de carga com log de auditoria
 - Admin_Log para rastreabilidade das cargas
 
+### 03 - DataWarehouse ⏳
+- Banco Datawarehouse_TechSales criado
+- Modelagem Star Schema
+- 4 dimensões: dim_Cliente, dim_Produto, 
+  dim_Vendedor, dim_Tempo
+- 1 tabela fato: fato_Vendas
+- Carga ETL Stage → DW (em desenvolvimento)
+
 ## ⏳ Em Desenvolvimento
 - DataWarehouse (Star Schema)
 - ETL com SSIS
