@@ -34,6 +34,14 @@ OLTP → Stage → DataWarehouse → Power BI
 - 1 Stored Procedure
 - 5 Views de extração para o Stage
 
+## 📐 Modelagem OLTP
+
+### Modelo Conceitual — DER
+![DER](docs/oltp/DER-MER.png)
+
+### Modelo Lógico
+![Modelo Lógico](docs/oltp/Modelo-Logico.png)
+
 ### 02 - Stage ✅
 - Banco Stage_TechSales criado
 - 5 tabelas de staging no schema dbo (Será criado Schema stage futuramente)
@@ -48,8 +56,15 @@ OLTP → Stage → DataWarehouse → Power BI
 - 1 tabela fato: fato_Vendas
 - Carga ETL Stage → DW (em desenvolvimento)
 
+## 📐 Modelagem DataWarehouse
+
+### Modelo Conceitual — Star Schema
+![Star Schema](docs/dw/DerDW.png)
+
+### Modelo Lógico DW
+![Modelo Lógico DW](docs/dw/ModeloLogicoDW.png)
+
 ## ⏳ Em Desenvolvimento
-- DataWarehouse (Star Schema)
 - ETL com SSIS
 - Dashboard Power BI
 
