@@ -4,12 +4,21 @@ GO
 USE Datawarehouse_TechSales
 GO
 
+-- ============================================
+-- Tabela de Log para monitoramento de processos de ETL e outras operações administrativas
+-- ============================================
+CREATE TABLE Admin_Log (
+    id_log      UNIQUEIDENTIFIER  DEFAULT NEWID(),
+    data_log    DATETIME          DEFAULT GETDATE(),
+    processo    VARCHAR(100),
+    status      CHAR(1),
+    mensagem    VARCHAR(255),
+    CONSTRAINT PK_Admin_Log PRIMARY KEY (id_log)
+)
 
 -- ============================================
 -- Esquema de Data Warehouse para TechSales
 -- ============================================
-
-
 CREATE TABLE dim_Cliente(	
 sk_cliente		INT				IDENTITY,
 nk_cliente		INT				NOT NULL,
