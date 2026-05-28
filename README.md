@@ -62,6 +62,42 @@ dim_Vendedor, dim_Tempo
 - load_dim_Vendedor
 - load_fato_Vendas
 
+## ⚙️ Automação — SQL Server Agent JOB
+
+### Processo de Carga
+Foi criado um JOB no SQL Server Agent para automatizar
+a carga completa do pipeline diariamente às 00:00.
+
+### Procedure Master de Carga
+```sql
+-- Executa todo o pipeline em sequência
+EXEC load_all_Stage_AND_Datawarehouse
+
+-- Fluxo executado:
+-- 1. Carrega Stage a partir das views do OLTP
+-- 2. Carrega dim_Cliente
+-- 3. Carrega dim_Produto  
+-- 4. Carrega dim_Vendedor
+-- 5. Carrega dim_Tempo
+-- 6. Carrega fato_Vendas
+```
+
+### ⚠️ Observação sobre ambiente de testes
+Este projeto foi desenvolvido em ambiente de 
+desenvolvimento com dados fictícios.
+
+Em produção as views de extração do OLTP seriam
+adaptadas para carga incremental — buscando apenas
+os registros do dia anterior via filtro de data:
+
+WHERE data_pedido = CAST(GETDATE()-1 AS DATE)
+
+Por se tratar de ambiente de testes com dados
+estáticos a carga foi implementada como full load
+onde o WHERE NOT EXISTS nas procedures do DW
+garante que não haja duplicação de registros
+a cada execução.
+
 ## 📐 Modelagem DataWarehouse
 
 ### Modelo Conceitual — Star Schema

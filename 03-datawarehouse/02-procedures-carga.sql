@@ -1,6 +1,23 @@
 Use Datawarehouse_TechSales;
 GO
 
+
+
+-- ============================================
+-- Procedure para carregar todos os dados do Stage e Data Warehouse (Automatização do pipeline ETL) será rodado diariamente pelo SQL Agent
+-- ============================================
+CREATE OR ALTER PROCEDURE load_all_Stage_AND_Datawarehouse
+AS
+BEGIN
+    EXEC Stage_TechSales..[Carrega_Stage_TechSales];
+ 
+	EXEC Datawarehouse_TechSales..[load_dim_cliente];
+	EXEC Datawarehouse_TechSales..[load_dim_Produto];
+	EXEC Datawarehouse_TechSales..[load_dim_Tempo];
+	EXEC Datawarehouse_TechSales..[load_dim_Vendedor];
+	EXEC Datawarehouse_TechSales..[load_fato_Vendas];
+END;
+
 -- ============================================
 -- Procedures de carga para as dimensões e fatos do Data Warehouse TechSales
 -- ============================================
