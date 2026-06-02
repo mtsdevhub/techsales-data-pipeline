@@ -6,8 +6,11 @@ GO
 -- ============================================
 -- Procedure para carregar todos os dados do Stage e Data Warehouse (Automatização do pipeline ETL) será rodado diariamente pelo SQL Agent
 -- ============================================
-CREATE OR ALTER PROCEDURE load_all_Stage_AND_Datawarehouse
+CREATE PROCEDURE [dbo].[load_all_Stage_AND_Datawarehouse]   
 AS
+BEGIN TRY
+    DECLARE @RecordsInserted INT;
+    SET     @RecordsInserted = @@ROWCOUNT;
 BEGIN
     EXEC Stage_TechSales..[Carrega_Stage_TechSales];
  
@@ -16,7 +19,40 @@ BEGIN
 	EXEC Datawarehouse_TechSales..[load_dim_Tempo];
 	EXEC Datawarehouse_TechSales..[load_dim_Vendedor];
 	EXEC Datawarehouse_TechSales..[load_fato_Vendas];
-END;
+END
+IF @RecordsInserted > 0
+	BEGIN
+    INSERT INTO Admin_Log (processo, status, mensagem)
+    VALUES (
+        'load_all_Stage_AND_Datawarehouse',
+        'S',
+        CONCAT(
+            'Carga realizada com sucesso! ' ,@RecordsInserted,  ' | '
+        )
+    )
+	END
+	ELSE
+	BEGIN
+    INSERT INTO Admin_Log (processo, status, mensagem)
+    VALUES (
+        'load_all_Stage_AND_Datawarehouse',
+        'S',
+        'Executado com sucesso, porém sem novos registros'
+    )
+    END
+END TRY
+BEGIN CATCH
+INSERT INTO Admin_Log (processo, status, mensagem)
+    VALUES (
+        'load_all_Stage_AND_Datawarehouse',
+        'F',
+        CONCAT(
+            'Erro: ',   ERROR_MESSAGE(),
+            ' Linha: ', ERROR_LINE()
+        )
+    )
+END CATCH
+GO
 
 -- ============================================
 -- Procedures de carga para as dimensões e fatos do Data Warehouse TechSales

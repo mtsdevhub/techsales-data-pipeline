@@ -82,21 +82,14 @@ EXEC load_all_Stage_AND_Datawarehouse
 -- 6. Carrega fato_Vendas
 ```
 
-### ⚠️ Observação sobre ambiente de testes
-Este projeto foi desenvolvido em ambiente de 
-desenvolvimento com dados fictícios.
-
-Em produção as views de extração do OLTP seriam
-adaptadas para carga incremental — buscando apenas
-os registros do dia anterior via filtro de data:
-
-WHERE data_pedido = CAST(GETDATE()-1 AS DATE)
-
-Por se tratar de ambiente de testes com dados
-estáticos a carga foi implementada como full load
-onde o WHERE NOT EXISTS nas procedures do DW
-garante que não haja duplicação de registros
-a cada execução.
+### ⚠️ Observação sobre carga incremental
+Em produção as views de extração seriam
+adaptadas para buscar apenas registros
+do dia anterior via filtro de data.
+Por se tratar de ambiente de testes e estudos
+a carga foi implementada como full load
+com WHERE NOT EXISTS no DW garantindo
+idempotência sem duplicação.
 
 ## 📐 Modelagem DataWarehouse
 
@@ -106,8 +99,25 @@ a cada execução.
 ### Modelo Lógico DW
 ![Modelo Lógico DW](docs/dw/ModeloLogicoDW.png)
 
+### 04 - SSIS ✅
+- Pacote ETL criado no Visual Studio
+- Connection Managers configurados:
+  TechSales_OLTP, Stage_TechSales, 
+  Datawarehouse_TechSales
+- Fluxo do pacote:
+  → Container Carga Stage: Execute SQL → Carrega_Stage_TechSales
+  → Container Carga Data Warehouse: Execute SQL → load_all_Stage_AND_Datawarehouse
+- Log de sucesso e falha em cada etapa
+- Agendamento via SQL Server Agent Job
+  executado diariamente às 01:00 AM
+
+### Fluxo Completo
+![Fluxo Completo](docs/ssis/fluxo-completo.png)
+
+### Job rodando o pacote
+![Job rodando o pacote](docs/ssis/Job-Pacote.png)
+
 ## ⏳ Em Desenvolvimento
-- ETL com SSIS
 - Dashboard Power BI
 
 ## 📁 Estrutura do Repositório

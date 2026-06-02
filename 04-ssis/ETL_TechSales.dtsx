@@ -1,0 +1,430 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/1/2026 6:13:10 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DBSRV1"
+  DTS:CreatorName="MARMITARIAX\Administrator"
+  DTS:DTSID="{F89E8707-D7C1-4EC3-B3AC-02058F98DE1A}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="14"
+  DTS:VersionGUID="{CDFC48E9-F700-4252-8059-D52258EE121B}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DBSRV1\MSSQLSERVER, 1436.Stage_TechSales.SA]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{68D33727-D1E0-416C-9C71-4A1C26A5A118}"
+      DTS:ObjectName="DBSRV1\MSSQLSERVER, 1436.Stage_TechSales.SA">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DBSRV1\MSSQLSERVER, 1436;User ID=SA;Initial Catalog=Stage_TechSales;Provider=SQLNCLI11.1;Application Name=SSIS-Package-{68D33727-D1E0-416C-9C71-4A1C26A5A118}DBSRV1\MSSQLSERVER, 1436.Stage_TechSales.SA;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAiuW8MDKBJUCLQlkXYa9GSwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABNcfZDkU3OZlnBhRCB/NQ3AAAAAASAAACgAAAAEAAAAPttklXPjxJEpPutExVdy/EYAAAAXIhrARmgqrlFdn6EbCzNtO/8JpFQhQhJFAAAAPgJ8NlXM3ygSLIBc9oS1TKTOdIz</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Carga_DW"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{C97FEE0F-72C8-4B1D-8338-D01C761BF7F0}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Carga_DW">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Carga_DW\CarregaDw"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{287ADD72-7DDB-456A-B606-0D11D9B40500}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="CarregaDw"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{68D33727-D1E0-416C-9C71-4A1C26A5A118}"
+              SQLTask:SqlStatementSource="EXEC DatawareHouse_TechSales..load_all_Stage_AND_Datawarehouse;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Carga_DW\LogFalhaDw"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{F555F9A7-130D-4DFF-93D2-5D719F67B18B}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="LogFalhaDw"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{68D33727-D1E0-416C-9C71-4A1C26A5A118}"
+              SQLTask:SqlStatementSource="INSERT INTO Datawarehouse_TechSales..Admin_Log (processo, status, mensagem)&#xA;    VALUES (&#xA;        'load_all_Stage_AND_Datawarehouse',&#xA;        'F',&#xA;        CONCAT(&#xA;            'Erro: ',   ERROR_MESSAGE(),&#xA;            ' Linha: ', ERROR_LINE()&#xA;        )&#xA;    )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Carga_DW\LogSucessoDw"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{F4601FFD-C992-4151-85D2-1FED69C8DEAC}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="LogSucessoDw"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{68D33727-D1E0-416C-9C71-4A1C26A5A118}"
+              SQLTask:SqlStatementSource="INSERT INTO Datawarehouse_TechSales..Admin_Log (processo, status, mensagem)&#xA;VALUES (&#xA;    'load_all_Stage_AND_Datawarehouse',&#xA;    'S',&#xA;    CONCAT(&#xA;        'Carga realizada com sucesso! ',  ' | '&#xA;    )&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Carga_DW.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{BBE46417-E6FA-4BDF-9566-9736F702346D}"
+          DTS:From="Package\Carga_DW\CarregaDw"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Carga_DW\LogSucessoDw" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Carga_DW.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{905DA9B0-95A0-46F5-A587-DF71B6BDDD28}"
+          DTS:From="Package\Carga_DW\CarregaDw"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Carga_DW\LogFalhaDw"
+          DTS:Value="1" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Carga_Stage"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{0890627F-EAA4-4E09-B40A-2997094E8750}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Carga_Stage">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Carga_Stage\CarregaStage"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{09CBFA1E-2547-409E-8EE8-5C8AB6DFF3DA}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="CarregaStage"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{68D33727-D1E0-416C-9C71-4A1C26A5A118}"
+              SQLTask:SqlStatementSource="EXEC Stage_TechSales..Carrega_Stage_TechSales;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Carga_Stage\LogFalhaStage"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{93EBE073-F1A0-420E-B232-DB0A2F122291}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="LogFalhaStage"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{68D33727-D1E0-416C-9C71-4A1C26A5A118}"
+              SQLTask:SqlStatementSource="INSERT INTO Stage_TechSales..Admin_Log (processo, status, mensagem)&#xA;VALUES (&#xA;    'Carrega_Stage_TechSales',&#xA;    'F',&#xA;    CONCAT(&#xA;        'Erro: ',   ERROR_MESSAGE(),&#xA;        ' Linha: ', ERROR_LINE()&#xA;    )&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Carga_Stage\LogSucessoStage"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{E464CEAF-84BA-4183-B263-B9A5AC7F09A0}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="LogSucessoStage"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{68D33727-D1E0-416C-9C71-4A1C26A5A118}"
+              SQLTask:SqlStatementSource="INSERT INTO Stage_TechSales..Admin_Log (processo, status, mensagem)&#xA;VALUES (&#xA;    'Carrega_Stage_TechSales',&#xA;    'S',&#xA;    CONCAT(&#xA;        'Carga realizada com sucesso! ',&#xA;        'Clientes: ',  ' | ',&#xA;        'Produtos: ',  ' | ',&#xA;        'Vendedores: ',  ' | ',&#xA;        'Vendas: ',   ' | ',&#xA;        'Itens: '&#xA;    )&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Carga_Stage.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{756FCBC4-486B-4069-9C73-154332CAE857}"
+          DTS:From="Package\Carga_Stage\CarregaStage"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Carga_Stage\LogSucessoStage" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Carga_Stage.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{7CBC4720-B115-44DF-A195-ACBF03E3DBB2}"
+          DTS:From="Package\Carga_Stage\CarregaStage"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Carga_Stage\LogFalhaStage"
+          DTS:Value="1" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{D07FA1A5-0EA7-48D7-99F3-53A10FD38C70}"
+      DTS:From="Package\Carga_Stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Carga_DW" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="142,42"
+          Id="Package\Carga_Stage\CarregaStage"
+          TopLeft="108,13" />
+        <NodeLayout
+          Size="160,42"
+          Id="Package\Carga_Stage\LogSucessoStage"
+          TopLeft="11.5,96" />
+        <EdgeLayout
+          Id="Package\Carga_Stage.PrecedenceConstraints[Constraint]"
+          TopLeft="156.666666666667,55">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-65.1666666666667,41"
+              Start="0,0"
+              End="-65.1666666666667,33.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,12.6740947075209" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12.6740947075209"
+                    Point2="0,16.6740947075209"
+                    Point3="-4,16.6740947075209" />
+                  <mssgle:LineSegment
+                    End="-61.1666666666667,16.6740947075209" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-61.1666666666667,16.6740947075209"
+                    Point2="-65.1666666666667,16.6740947075209"
+                    Point3="-65.1666666666667,20.6740947075209" />
+                  <mssgle:LineSegment
+                    End="-65.1666666666667,33.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="148,42"
+          Id="Package\Carga_Stage\LogFalhaStage"
+          TopLeft="203,92" />
+        <EdgeLayout
+          Id="Package\Carga_Stage.PrecedenceConstraints[Constraint 1]"
+          TopLeft="201.333333333333,55">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="75.6666666666667,37"
+              Start="0,0"
+              End="75.6666666666667,29.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,11.0473537604457" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.0473537604457"
+                    Point2="0,15.0473537604457"
+                    Point3="4,15.0473537604457" />
+                  <mssgle:LineSegment
+                    End="71.6666666666667,15.0473537604457" />
+                  <mssgle:CubicBezierSegment
+                    Point1="71.6666666666667,15.0473537604457"
+                    Point2="75.6666666666667,15.0473537604457"
+                    Point3="75.6666666666667,19.0473537604457" />
+                  <mssgle:LineSegment
+                    End="75.6666666666667,29.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="22.5919856770833,20.0473537604457,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="366,161"
+          Size="366,204"
+          Id="Package\Carga_Stage"
+          TopLeft="297,47" />
+        <NodeLayout
+          Size="131,42"
+          Id="Package\Carga_DW\CarregaDw"
+          TopLeft="122,19" />
+        <NodeLayout
+          Size="149,42"
+          Id="Package\Carga_DW\LogSucessoDw"
+          TopLeft="13,115" />
+        <EdgeLayout
+          Id="Package\Carga_DW.PrecedenceConstraints[Constraint]"
+          TopLeft="167,61">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-79.5,54"
+              Start="0,0"
+              End="-79.5,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.9909502262443" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17.9909502262443"
+                    Point2="0,21.9909502262443"
+                    Point3="-4,21.9909502262443" />
+                  <mssgle:LineSegment
+                    End="-75.5,21.9909502262443" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-75.5,21.9909502262443"
+                    Point2="-79.5,21.9909502262443"
+                    Point3="-79.5,25.9909502262443" />
+                  <mssgle:LineSegment
+                    End="-79.5,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="136,42"
+          Id="Package\Carga_DW\LogFalhaDw"
+          TopLeft="222,116" />
+        <EdgeLayout
+          Id="Package\Carga_DW.PrecedenceConstraints[Constraint 1]"
+          TopLeft="208,61">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="82,55"
+              Start="0,0"
+              End="82,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.3981900452489" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.3981900452489"
+                    Point2="0,22.3981900452489"
+                    Point3="4,22.3981900452489" />
+                  <mssgle:LineSegment
+                    End="78,22.3981900452489" />
+                  <mssgle:CubicBezierSegment
+                    Point1="78,22.3981900452489"
+                    Point2="82,22.3981900452489"
+                    Point3="82,26.3981900452489" />
+                  <mssgle:LineSegment
+                    End="82,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="25.75865234375,27.3981900452489,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="370,181"
+          Size="370,224"
+          Id="Package\Carga_DW"
+          TopLeft="294,276" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="479.5,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,25"
+              Start="0,0"
+              End="0,17.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
