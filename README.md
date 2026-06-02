@@ -15,7 +15,7 @@ solução completa de dados.
 ## 🛠️ Tecnologias
 - SQL Server
 - SSMS (SGBD usado para gerenciamento dos dados)
-- SSIS (em desenvolvimento)
+- SSIS 
 - Power BI (em desenvolvimento)
 
 ## 📐 Arquitetura
