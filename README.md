@@ -16,8 +16,11 @@ solução completa de dados.
 - SQL Server
 - SSMS (SGBD usado para gerenciamento dos dados)
 - SSIS 
+<<<<<<< HEAD
 - SSAS
 - SQL Server Agent (jobs)
+=======
+>>>>>>> ba360b85b2f28e10363954b82d01065112929f0f
 - Power BI (em desenvolvimento)
 
 ## 📐 Arquitetura
