@@ -15,7 +15,9 @@ solução completa de dados.
 ## 🛠️ Tecnologias
 - SQL Server
 - SSMS (SGBD usado para gerenciamento dos dados)
-- SSIS (em desenvolvimento)
+- SSIS 
+- SSAS
+- SQL Server Agent (jobs)
 - Power BI (em desenvolvimento)
 
 ## 📐 Arquitetura
@@ -61,12 +63,6 @@ dim_Vendedor, dim_Tempo
 - load_dim_Produto
 - load_dim_Vendedor
 - load_fato_Vendas
-
-## ⚙️ Automação — SQL Server Agent JOB
-
-### Processo de Carga
-Foi criado um JOB no SQL Server Agent para automatizar
-a carga completa do pipeline diariamente às 00:00.
 
 ### Procedure Master de Carga
 ```sql
@@ -117,6 +113,52 @@ idempotência sem duplicação.
 ### Job rodando o pacote
 ![Job rodando o pacote](docs/ssis/Job-Pacote.png)
 
+### 05 - SSAS ✅
+- Projeto Multidimensional criado no Visual Studio
+- Data Source conectado ao Datawarehouse_TechSales
+- Data Source View com Star Schema completo
+- 4 Dimensões criadas:
+  → dim_Cliente  
+  → dim_Produto  
+  → dim_Vendedor 
+  → dim_Tempo    
+- Hierarquias criadas:
+  → Localização Cliente (Estado → Cidade)
+  → Classificacao Produto (Categoria → Subcategoria → Produto)
+  → Equipe Vendas (Região → Cargo → Vendedor)
+  → Calendario (Ano → Semestre → Trimestre → Mês → Dia)
+- Medidas do cubo:
+  → Faturamento (SUM valor_liquido)
+  → Valor Bruto (SUM valor_bruto)
+  → Lucro Bruto (SUM lucro_bruto)
+  → Quantidade Vendida (SUM quantidade)
+  → Valor Frete (SUM valor_frete)
+  → Total Pedidos (COUNT DISTINCT nk_pedido)
+- Cubo deployado e processado no servidor SSAS
+- Pacote SSIS criado para processamento
+  automático do cubo via SQL Server Agent Job
+  executado diariamente às 02:00
+
+  ### Visual Cubo
+![Visual Cubo](docs/ssas/visual-cubo.png)
+
+### Browse Cubo
+![Browse Cubo](docs/ssas/browse-cubo.png)
+
+## ⚙️ Automação — SQL Server Agent Jobs
+
+### JOB 1 — Carga Diária ETL
+- Horário: 01:00
+- Executa: ETL_TechSales.dtsx
+  → Carrega Stage a partir do OLTP
+  → Carrega dimensões e fato do DW
+
+### JOB 2 — Processamento do Cubo SSAS
+- Horário: 02:00
+- Executa: Processa_Cubo.dtsx
+  → Processa o cubo após carga do DW
+  → Garante dados atualizados no Power BI
+
 ## ⏳ Em Desenvolvimento
 - Dashboard Power BI
 
@@ -125,5 +167,6 @@ idempotência sem duplicação.
 02-stage/         → Banco de staging
 03-datawarehouse/ → Banco analítico
 04-ssis/          → Pacotes ETL
-05-bi/            → Dashboard Power BI
+05-ssas/          → Cubos de Dados
+06-power bi\      → Dashboard Power BI
 docs/             → Diagramas e documentação
