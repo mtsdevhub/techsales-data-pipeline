@@ -172,7 +172,7 @@ idempotência sem duplicação.
     e ranking de vendedores
 
 ### Dashboard Power BI
-![Dashboard Power BI](06-power-bi/dashboardprojeto.png)
+![Dashboard Power BI](06-power-bi/dasboardprojeto.png)
 
 ## 📁 Estrutura do Repositório
 01-oltp/          → Banco operacional
