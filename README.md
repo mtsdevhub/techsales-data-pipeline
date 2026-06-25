@@ -159,8 +159,17 @@ idempotência sem duplicação.
   → Processa o cubo após carga do DW
   → Garante dados atualizados no Power BI
 
-## ⏳ Em Desenvolvimento
-- Dashboard Power BI
+### 06 - Power BI ✅
+- Dashboard conectado ao cubo SSAS
+- 4 páginas analíticas:
+  → Visão Geral — KPIs, faturamento mensal,
+    Status Pedidos
+  → Vendas & Faturamento — análise por cliente,
+    segmento e forma de pagamento
+  → Produtos & Estoque — ranking de produtos,
+    lucro e estoque crítico
+  → Vendedores & Metas — desempenho vs meta
+    e ranking de vendedores
 
 ## 📁 Estrutura do Repositório
 01-oltp/          → Banco operacional
