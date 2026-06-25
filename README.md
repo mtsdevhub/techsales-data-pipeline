@@ -171,6 +171,9 @@ idempotência sem duplicação.
   → Vendedores & Metas — desempenho vs meta
     e ranking de vendedores
 
+### Dashboard Power BI
+![Dashboard Power BI](06-power-bi/dashboardprojeto.png)
+
 ## 📁 Estrutura do Repositório
 01-oltp/          → Banco operacional
 02-stage/         → Banco de staging
